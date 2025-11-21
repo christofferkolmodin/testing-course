@@ -1,4 +1,4 @@
-package lab1;
+package LAB1;
 
 import java.util.*;
 import java.util.function.IntBinaryOperator;
@@ -13,23 +13,27 @@ public class Set {
   public int[] toArray() {
     int[] ia = new int[a.size()];
     for (int i = 0; i < ia.length; i++) {
-      ia[i] = a.get(i);
+        ia[i] = a.get(i);
     }
     return ia;
   }
 
   public void insert(int x) {
+    boolean shouldAdd = true;
+
     for (int i = 0; i < a.size(); i++) {
       if (a.get(i) > x) {
-        a.add(i, x);
-        break;
+          a.add(i, x);
+          shouldAdd = false;
+          break;
       } else {
         if (a.get(i) == x) {
-          break;
+            shouldAdd = false;
+            break;
         }
       }
     }
-    a.add(x);
+    if (shouldAdd) a.add(x);
   }
 
   public boolean member(int x) {
@@ -46,18 +50,23 @@ public class Set {
   }
 
   public void intersect(Set s) {
-    for(int i = 0, j = 0 ; i < a.size() && j < s.a.size();) {
+    int i = 0;
+
+    for(int j = 0; i < a.size() && j < s.a.size();) {
       if (a.get(i).equals(s.a.get(j))){
         i++;
         j++;
       } else {
         if (a.get(i) < s.a.get(j)) {
           a.remove(i);
-          i++;
         } else {
           j++;
         }
       }
+    }
+    // If all elements in Set s have been exhausted, then the remaining elements in Set a should be removed
+    while (i < a.size()) {
+        a.remove(i);
     }
   }
 

@@ -1,7 +1,7 @@
-package lab1;
+package LAB1.ex1;
 
+import LAB1.Set;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 
