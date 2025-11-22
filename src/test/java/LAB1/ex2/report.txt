@@ -1,0 +1,91 @@
+The input space is defined to only handle positive values for number of workers and working hours,
+therefore negative values are not tested since it would be testing something that wasn't promised to work to begin with.
+
+The tests are designed to ensure that each line of pseudo code and condition are tested to ensure that they yield the
+result which is specified.
+
+The idea behind the structure of the tests are to achieve full branch and statement coverage to the greatest extent
+possible.
+
+a) setRequiredNumber()
+    Input space: 0 <= nemployee, 0 <= starttime and 0 <=endtime
+
+    Partition:
+
+    Block #1: starttime > endtime
+        starttimeBiggerThanEndtimeTest()
+            input: allowed workers = 2, startTime = 0, endTime = 3, workers = 1
+
+            changed input: allowed workers = 3, startTime = 4, endTime = 1
+
+            expected: allowed workers = 2 and employed workers = 1, since starttime > endtime
+
+        Found bugs: None
+
+
+    Block #2: (nemployee > employed workers) -> discards excess worker
+        starttimeSmallerThanEndtimeTest()
+            input: allowed workers = 3, startTime = 0, endTime = 3, workers full shift = 3
+
+            changed input: allowed workers = 2
+
+            expected: allowed workers = 2, workers for each working hour = 2
+
+        Found bugs: Actual worker = 1 when it should be 2
+
+
+    Block #3: (nemployee <= requiredNumber) -> requiredNumber and workingEmployees unchanged
+        nEmployeeSameAsRequiredNumberMeansUnchangedWorkersTest()
+            input: requiredNumber = 5, workingEmployees = 3
+            changed input: nEmployees = 4
+            expected: requiredNumber = 4, workingEmployees = 3
+
+            changed input: nEmployees = 3
+            expected: requiredNumber = 4, workingEmployees = 3
+
+        Found bugs: None
+
+
+    Border cases:
+        alternatingActiveWorkers()
+            input: 1 worker hour 0, 2 workers hour 1, 3 workers hour 2, 4 workers hour 3
+                   requiredNumber = 4
+            expected: hour.workingEmployees.length matches expected worker number
+                      requiredNumber = 4 for all hours
+
+        addMoreWorkersThanAllowedAmount()
+            input: requiredNumber = 2
+                   workingEmployees = 3
+
+            expected: workingEmployees = 2
+
+        Found bugs: None
+
+
+b) nextIncomplete()
+
+    Input space: currenttime >= 0 and currenttime < size
+
+    Partition:
+
+    Block #1: (workingEmployees < requiredNumbers)
+        testIncompleteWorkerAmountWithNoWorkers()
+            input: requiredNumbers = 1, workingEmployees = 0, currentTime = 0, startTime = 0
+            expected: nextIncomplete = 0, requiredNumbers = 1, workingEmployees = 0
+
+        testIncompleteWorkerAmountWithMoreThan0Workers()
+            input: requiredNumbers = 2, workingEmployees = 1, currentTime = 0, startTime = 1
+            expected: nextIncomplete = 1, requiredNumbers = 2, workingEmployees = 1 (between hour 1 and 2 inclusive)
+
+        Found bugs: The values of nextIncomplete indicate that its return value is the time furthest from currentTime, not nearest
+
+     Block #2: (workingEmployees >= requiredNumbers)
+        testWorkerAmountEqualToRequiredNumber()
+            input: requiredNumber = 1, workingEmployees = 1, currentTime = 0, startTime = 0
+            expected: nextIncomplete = -1, requiredNumber = 1, workingEmployees = 1
+
+        testWorkerAmountMoreThanRequiredNumber()
+            input: requiredNumber = 1, workingEmployees = 3, currentTime = 0, startTime = 0
+            expected: nextIncomplete = -1, requiredNumber = 1, workingEmployees = 1
+
+        Found bugs: None
