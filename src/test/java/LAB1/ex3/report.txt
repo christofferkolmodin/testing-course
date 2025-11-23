@@ -1,0 +1,53 @@
+
+
+3.1 Task 1:
+
+    The first test:
+        Second date falls after the first date, within the same month
+
+        java Dates 1 1 1 7
+            expected result : 6
+            actual result   : -25
+
+    Second test:
+        Second date falls after the first date, during a later month
+
+        java Dates 3 1 4 1
+            expected result : 31 days
+            actual result   : -62 days
+
+    Third test:
+        Second date falls earlier than the first date
+
+        java Dates 4 2 4 1
+            expected result : 364 days
+            actual result   : -125
+
+
+3.2 Task 2:
+
+    Method arguments:
+        month
+        args
+    Local variables:
+        someMonth
+        someDay
+        laterMonth
+        laterDay
+        someDayInYear
+        laterDayInYear
+        aMonth
+        daysBetween
+
+
+3.3 Task 3:
+
+    The second method is: daysInMonth(int)
+
+3.4 Task 4:
+
+
+
+
+
+
