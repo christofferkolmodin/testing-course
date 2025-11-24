@@ -1,4 +1,4 @@
-package LAB1;
+package LAB1.ex1;
 
 import java.util.*;
 import java.util.function.IntBinaryOperator;
