@@ -46,8 +46,69 @@
 
 3.4 Task 4:
 
+    arguments       : Jan 2, March 4
+        expected result : 61 days
+        actual result   : 33 days
 
 
+    Bug 1, aMonth variable starts at 0 when it should start at 1:
 
+        It appears that when Dates is given someMonth = 1, the loop which calculates someDayInYear runs once
+        for January, when in reality it shouldn't enter the loop at all. So for January it sets someDayInYear = 31
+        on line 34, when it should be set to 0. Since daysInMonth has the method argument month = 0 the first time its
+        run on line 13, most likely the variable aMonth is used as an argument for daysInMonth in the code.
 
+    Bug 2, aMonth variable is not reset after its first use for someDayInYear:
+
+        When calculating laterDayInYear, the loop runs twice (month = 1, line 13 -> laterDayInYear = 31, line 38 ->
+        month = 2, line 13 -> laterDayInYear = 62, line 38). Intuitively it makes sense to loop twice and get the value
+        62 when calculating dayInYear for March, however it doesn't make sense that it loops the correct amount of times
+        the second time when it ran the wrong amount of times the first time. Probably the aMonth variable is iterated
+        when calculating the dayInYear variables, but its value is not reset after calculating someDayInYear. This
+        will give incorrect calculations for laterDayInYear even though it's value seems okay in this instance.
+
+    Bug 3, daysInMonth returns the wrong value for February:
+
+        When daysInMonth(2) is run on line 13, the value for laterDayInYear is updated from 31 to 62. This suggests that
+        daysInMonth(2) for the month February returns 31, when it should return 28 when ignoring leap years.
+
+    Bug 4, second date falling before second date does not calculate the second date, and does not add 365 days:
+
+        When the later date falls "before" the first date, e.g. it's intended to be treated as falling in the next year.
+        However in the code's current state, laterDayInYear is never calculated because the value for aMonth is never
+        reset (as per Bug 2).
+
+        Based on the results for daysBetween, which on line 48 is set to 31, then on line 49 to 33, this suggests that
+        the calculations made are most likely:
+            daysBetween = laterDayInYear - someDayInYear
+                        = 62 - 31 = 31
+            daysBetween = daysBetween + (laterDay - someDay)
+                        = 31 + (4 - 2)
+                        = 33
+
+        Therefore, the second problem when the later date falls in the following year, the calculation needs to add
+        365 days to laterDay to find an accurate value for daysBetween.
+
+        When running Dates 3 4 1 2, the result is -95, which supports both that: the loop is run 3 times for
+        someDayInYear instead of the intended 2 times, giving someDayInYear = 93. It is run 0 times in this case for
+        laterDayInYear, giving laterDayInYear = 0. daysBetween would then be calculated as:
+            daysBetween = 0 - 93        = -93
+            daysBetween = -93 + (2 - 4) = -95
+        which supports this theory.
+
+    Bug 5:
+        Not only February gives the wrong amount of days. For example April iterates dayInYear by 31 days instead of 30,
+        and July iterates dayInYear by 30 instead of 31.
+
+3.5 Task 5:
+
+    1: added condition for February, if (month == 2) return 28;
+    2: aMonth set to 1 instead of 0 as a starting value
+    3: aMonth reset to 1 for the second for loop
+    4: added condition for when laterDayInYear falls before someDayInYear, which checks if
+           laterDayInYear + laterDay < someDayInYear + someDay, and adds 365 to laterDayInYear if that is the case.
+    5: in daysInmonth(), removed month of July from condition to return 30 days, and added April instead
+
+    In the current implementation, the user is expected to provide a value for day which exists in the real world
+    e.g. a day between 1 and 31, or 1 and 28 for February, as well as a value for month between 1 and 12 inclusive.
 
