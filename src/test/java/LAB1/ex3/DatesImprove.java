@@ -1,6 +1,5 @@
 package LAB1.ex3;
 
-@SuppressWarnings("ALL")
 class DatesImprove {
     /* Precondition: month is between 1 and 12, inclusive */
     /* Postcondition: returns the number of days in the given month */
